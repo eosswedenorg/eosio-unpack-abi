@@ -3,9 +3,10 @@
 DEFAULT_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BASE_DIR=${PACKAGE_BASE_DIR:-${DEFAULT_BASE_DIR}}
 
+PACKAGE_ARCH=$(dpkg --print-architecture)
 PACKAGE_TMPDIR=${PACKAGE_TMPDIR:-debpkg}
 PACKAGE_RELEASE=${PACKAGE_RELEASE:-1}
-PACKAGE_FULLNAME="${PACKAGE_NAME}_${PACKAGE_VERSION}-${PACKAGE_RELEASE}_all"
+PACKAGE_FULLNAME="${PACKAGE_NAME}_${PACKAGE_VERSION}-${PACKAGE_RELEASE}_${PACKAGE_ARCH}"
 
 rm -fr ${BASE_DIR}/${PACKAGE_TMPDIR}
 
@@ -15,7 +16,7 @@ echo "Package: ${PACKAGE_NAME}
 Version: ${PACKAGE_VERSION}-${PACKAGE_RELEASE}
 Section: utils
 Priority: optional
-Architecture: $(dpkg --print-architecture)
+Architecture: ${PACKAGE_ARCH}
 Homepage: https://github.com/eosswedenorg/eosio-unpack-abi
 Maintainer: Henrik Hautakoski <henrik@eossweden.org>
 Description: ${PACKAGE_DESCRIPTION}" &> ${BASE_DIR}/${PACKAGE_TMPDIR}/DEBIAN/control
