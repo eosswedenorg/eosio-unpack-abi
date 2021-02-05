@@ -3,10 +3,15 @@
 DEFAULT_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BASE_DIR=${PACKAGE_BASE_DIR:-${DEFAULT_BASE_DIR}}
 
-PACKAGE_ARCH=$(dpkg --print-architecture)
+PACKAGE_ARCH=${GOARCH:-$(dpkg --print-architecture)}
+# Replace GOARCH's 386 to i386
+if [ "${PACKAGE_ARCH}" == "386" ]; then
+	PACKAGE_ARCH="i386"
+fi
 PACKAGE_TMPDIR=${PACKAGE_TMPDIR:-debpkg}
 PACKAGE_RELEASE=${PACKAGE_RELEASE:-1}
 PACKAGE_FULLNAME="${PACKAGE_NAME}_${PACKAGE_VERSION}-${PACKAGE_RELEASE}_${PACKAGE_ARCH}"
+
 
 rm -fr ${BASE_DIR}/${PACKAGE_TMPDIR}
 
